@@ -16,7 +16,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: trampfox/dam-playground:latest
+          tags: docker.pkg.github.com/trampfox/dam-playground:latest
           context: .
           file: ./docker/Dockerfile
       - name: Image digest
