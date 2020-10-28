@@ -6,13 +6,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v4"
 )
 
 type Message struct {
-	Status  int    `json:status`
 	Message string `json:message`
 }
 
@@ -31,13 +31,13 @@ func main() {
 		Name("Data").
 		HandlerFunc(Data)
 
+	log.Println("Listening on port 8081...")
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	message := Message{
-		Status:  http.StatusOK,
-		Message: "OK",
+		Message: "Hello, world!",
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
@@ -47,6 +47,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Data(w http.ResponseWriter, r *http.Request) {
+	defer timeTrack(time.Now())
 	var requestData map[string]interface{}
 
 	err := json.NewDecoder(r.Body).Decode(&requestData)
@@ -70,5 +71,21 @@ func Data(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("An error occurred: %v\n", err)
 	}
 
-	log.Printf("%+v", requestData)
+	message := Message{
+		Message: "Data successfully inserted into database",
+	}
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
+	// log.Printf("Data successfully inserted into database: %+v", requestData)
+
+	if err := json.NewEncoder(w).Encode(message); err != nil {
+		panic(err)
+	}
+}
+
+func timeTrack(start time.Time) int64 {
+	elapsed := time.Since(start)
+	log.Printf("Request served. Elapsed: %dms", elapsed.Milliseconds())
+	return elapsed.Milliseconds()
 }
