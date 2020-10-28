@@ -13,9 +13,9 @@ jobs:
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v2
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          push: true
+          tags: trampfox/dam-playground:latest
+          context: .
           file: ./docker/Dockerfile
-          registry: docker.pkg.github.com
-          repository: trampfox/dam-playground/dam-playground
-          tag_with_ref: true
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
