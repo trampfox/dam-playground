@@ -1,0 +1,1 @@
+{"temperature": "15.5", "pressure": "1018", "wind-speed": "0.58", "latitude": "45.068371", "longitude": "7.683070"}
