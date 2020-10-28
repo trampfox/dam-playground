@@ -1,6 +1,6 @@
 # dam-playground
 
-Playing with Go and PostgreSQL JSONB data type. 
+Playing with Go and PostgreSQL JSONB data type.
 
 ## Configuration
 
@@ -17,6 +17,17 @@ CREATE TABLE damdata (
 
 ```bash
 export DATABASE_URL="postgresql://postgres:test@localhost:5432/data"
+```
+
+## Build
+
+
+## Run
+
+## Load test
+
+```bash
+ab -p ab/payload.txt -T application/json -H 'Accept: application/json' -c 30 -n 3000 -l -k -v 2 http://localhost:8081/data > post_results.txt
 ```
 
 ## Examples
